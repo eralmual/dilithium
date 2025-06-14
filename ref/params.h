@@ -12,6 +12,8 @@
 #define D 13
 #define ROOT_OF_UNITY 1753
 
+#define DILITHIUM_MODE 6
+
 #if DILITHIUM_MODE == 2
 #define K 4
 #define L 4
@@ -37,6 +39,17 @@
 #elif DILITHIUM_MODE == 5
 #define K 8
 #define L 7
+#define ETA 2
+#define TAU 60
+#define BETA 120
+#define GAMMA1 (1 << 19)
+#define GAMMA2 ((Q-1)/32)
+#define OMEGA 75
+#define CTILDEBYTES 64
+
+#elif DILITHIUM_MODE == 6
+#define K 8
+#define L 8
 #define ETA 2
 #define TAU 60
 #define BETA 120

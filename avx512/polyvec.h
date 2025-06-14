@@ -10,6 +10,27 @@ typedef struct {
   poly vec[L];
 } polyvecl;
 
+typedef struct {
+  int32_t* ptr;
+  uint32_t rows;
+  uint32_t cols;
+} matrix;
+
+typedef struct {
+  uint8_t* ptr;
+  uint32_t len;
+} seed;
+
+#define AVX512_IMPL
+#ifdef AVX512_IMPL
+#define REG_BIT_LEN 512
+#elif AVX2_IMPL
+#define REG_BIT_LEN 256
+#else
+#error "Unsupported architecture"
+#endif
+
+
 #define polyvecl_uniform_eta DILITHIUM_NAMESPACE(polyvecl_uniform_eta)
 void polyvecl_uniform_eta(polyvecl *v, const uint8_t seed[CRHBYTES], uint16_t nonce);
 
@@ -81,6 +102,7 @@ void polyveck_pack_w1(uint8_t r[K*POLYW1_PACKEDBYTES], const polyveck *w1);
 
 #define polyvec_matrix_expand DILITHIUM_NAMESPACE(polyvec_matrix_expand)
 void polyvec_matrix_expand(polyvecl mat[K], const uint8_t rho[SEEDBYTES]);
+void matrix_expand(matrix* A, const seed* seed);
 
 #define polyvec_matrix_expand_row0 DILITHIUM_NAMESPACE(polyvec_matrix_expand_row0)
 void polyvec_matrix_expand_row0(polyvecl *rowa, polyvecl *rowb, const uint8_t rho[SEEDBYTES]);
@@ -98,6 +120,8 @@ void polyvec_matrix_expand_row5(polyvecl *rowa, polyvecl *rowb, const uint8_t rh
 void polyvec_matrix_expand_row6(polyvecl *rowa, polyvecl *rowb, const uint8_t rho[SEEDBYTES]);
 #define polyvec_matrix_expand_row7 DILITHIUM_NAMESPACE(polyvec_matrix_expand_row7)
 void polyvec_matrix_expand_row7(polyvecl *rowa, polyvecl *rowb, const uint8_t rho[SEEDBYTES]);
+void matrix_expand_row(matrix* A, const seed* seed, uint32_t offset);
+
 
 #define polyvec_matrix_pointwise_montgomery DILITHIUM_NAMESPACE(polyvec_matrix_pointwise_montgomery)
 void polyvec_matrix_pointwise_montgomery(polyveck *t, const polyvecl mat[K], const polyvecl *v);
